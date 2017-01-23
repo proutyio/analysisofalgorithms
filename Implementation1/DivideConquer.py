@@ -11,34 +11,34 @@ inputfile = "example.input"
 min = float("inf")
 
 def readFile():
-	lst =[]
+	points =[]
 	with open(inputfile) as file:
-		lst = [tuple(map(int, l.split(' '))) for l in file]
-	return lst
+		points = [tuple(map(int, l.split(' '))) for l in file]
+	return points
 
-def distance(tupA, tupB):
-	return math.sqrt((tupB[0]-tupA[0])**2 + (tupB[1]-tupA[1])**2)
+def distance(pointA,pointB):
+	return math.sqrt((pointB[0]-pointA[0])**2 + (pointB[1]-pointA[1])**2)
 
-def compare(x,y):
-	d = distance(x,y)
+def compare(pointA,pointB):
+	d = distance(pointA,pointB)
 	global min
 	if d < min:
 		min = d
 		#print min
 
-def divideAndConquer(lst):	
-	if len(lst) == 2: 
-		compare(lst[0], lst[1])
+def divideAndConquer(points):	
+	if len(points) == 2: 
+		compare(points[0], points[1])
 	else:
-		mid = len(lst)/2
-		left = lst[:mid]
-		right = lst[-mid:]
+		mid = len(points)/2
+		left = points[:mid]
+		right = points[-mid:]
 		print left, right
 
 		compare(left[0],right[0])
 		global min
 		print min
-		#minleft = divideAndConquer(left)
+		minleft = divideAndConquer(left)
 		minRight = divideAndConquer(right)
 		
 
