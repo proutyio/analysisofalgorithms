@@ -24,24 +24,23 @@ def compare(x,y):
 	global min
 	if d < min:
 		min = d
-		print min
+		#print min
 
 def divideAndConquer(lst):	
-	if len(lst) < 2: 
-		compare(lst[0], lst[0])
+	if len(lst) == 2: 
+		compare(lst[0], lst[1])
 	else:
 		mid = len(lst)/2
 		left = lst[:mid]
 		right = lst[-mid:]
 		print left, right
 
-		minleft = divideAndConquer(left)
-		print minleft
-		print
-
+		compare(left[0],right[0])
+		global min
+		print min
+		#minleft = divideAndConquer(left)
 		minRight = divideAndConquer(right)
-		print minRight
-		print
-
+		
 
 divideAndConquer(readFile())
+print min
