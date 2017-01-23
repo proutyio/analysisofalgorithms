@@ -32,7 +32,9 @@ def bruteForce(lst):
 def printMinDistance(lst):
 	min = bruteForce(lst)
 	print min
-
+	
+	lst.sort(key=lambda x: x[1])
+	lst.sort(key=lambda x: x[0])
 	for a in lst:
 		for b in lst:
 			if distance(a,b) == min:

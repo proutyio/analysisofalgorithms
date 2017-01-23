@@ -41,6 +41,9 @@ def divideAndConquer(points):
 		minleft = divideAndConquer(left)
 		minRight = divideAndConquer(right)
 		
+lst = readFile()
+lst.sort(key=lambda x: x[0])
+print lst
 
-divideAndConquer(readFile())
-print min
+#divideAndConquer(readFile())
+#print min
