@@ -21,7 +21,9 @@ def distance(pointA,pointB):
 	return math.sqrt((pointB[0]-pointA[0])**2 + (pointB[1]-pointA[1])**2)
 
 
-def min(a,b):
+def min(p1,p2):
+	a = distance(p1[0],p1[1])
+	b = distance(p2[0],p2[1])
 	if(a < b):
 		return a
 	else:
@@ -32,18 +34,19 @@ def closestCrossPairs():
 	print
 
 
-def divideAndConquer(points):	
-	if len(points) <= 3: 
-		return distance(points[0], points[1])
+def divideAndConquer(pts):	
+	if len(pts) <= 3: 
+		return distance(pts[0], pts[1])
 	else:
-		mid = len(points)/2
-		left = points[:mid]
-		right = points[-mid:]
+		pts.sort(key=lambda x: x[0]) #sort points by x value - (nlogn)
+		m = len(pts)/2				
+		l = pts[:m]
+		r = pts[-m:]
 
-		d1 = divideAndConquer(left)
-		d2 = divideAndConquer(right)
-		d = min(d1,d2)
-		return d
+		d1 = divideAndConquer(l)
+		d2 = divideAndConquer(r)
+		#d = min(d1,d2)
+		#return d
 
 		
 print divideAndConquer(readFile())
