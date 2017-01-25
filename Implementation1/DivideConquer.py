@@ -28,9 +28,6 @@ def min(a,b):
 	else:
 		return b
 
-#def minPts(p1,p2)
-	#a = distance(p1)
-
 
 def closestCrossPairs(pts,dt):
 	dm = dt
@@ -61,7 +58,7 @@ def divideAndConquer(pts):
 			#delta = min( distance(d1[0],d1[1]), distance(d2[0],d2[1]) )
 
 		pts.sort(key=lambda s: s[1])
-		dm = closestCrossPairs(pts,1)
+		dm = closestCrossPairs(pts,2)
 		return dm
 
 		
