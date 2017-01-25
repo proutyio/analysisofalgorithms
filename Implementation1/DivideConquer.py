@@ -7,7 +7,7 @@ import math
 	Winter 2017
 '''
 
-inputfile = "points.input"#"example.input"
+inputfile = "example.input"#"example.input"
 
 delta = 0
 min_pts = []
@@ -30,6 +30,11 @@ def min(d,dm, pts):
 	else:
 		return dm
 
+def min2(p1, p2):
+	''' Returns smaller of two points, based on x '''
+	if(p1[0]<p2[0]):
+		return p1
+	return p2
 
 def closestCrossPairs(pts,dt):
 	dm = dt
@@ -47,13 +52,37 @@ def closestCrossPairs(pts,dt):
 	return dm
 
 
+def findDelta(ptA, ptB):
+	return abs(ptB[0]-ptA[0])
 
-def divideAndConquer(pts):	
-	if len(pts) < 3:
-		return pts  
+
+def divideAndConquer(pts):
+	if len(pts) <= 3:
+
+		d1 = distance(pts[0], pts[1])
+		if d1 < delta:
+			delta = d1
+			min_pairs = (pts[0], pts[1])
+		else if d1 == delta:
+			min_pairs += (pts[0], pts[1])
+
+		if len(pts) == 3:
+			d2 = distance(pts[0], pts[2])
+			if d2 < delta:
+				delta = d2
+				min_pairs = (pts[0], pts[2])
+			else if d2 == delta:
+				min_pairs += (pts[0], pts[2])
+
+			d3 = distance(pts[1], pts[2])
+			if d3 < delta:
+				delta = d3
+				min_pairs = (pts[1], pts[2])
+			else if d3 == delta:
+				min_pairs += (pts[1], pts[2])
+
 	else:
-		pts.sort(key=lambda s: s[0]) #sort points by x value - (nlogn)
-		m = len(pts)/2				
+		m = len(pts)/2
 		l = pts[:m]
 		r = pts[-m:]
 
@@ -62,13 +91,15 @@ def divideAndConquer(pts):
 
 		#if d1 and d2 is not None:
 			#delta = min( distance(d1[0],d1[1]), distance(d2[0],d2[1]) )
-
 		pts.sort(key=lambda s: s[1])
+		print pts
 		dm = closestCrossPairs(pts,2)
 		return dm
 
-		
-print divideAndConquer(readFile())
+inputs = readFile()
+inputs.sort(key=lambda s: s[0]) #sort points by x value - (nlogn)
+
+print divideAndConquer(inputs)
 #min_pts.sort(key=lambda s:s[0])
 #for pt in min_pts:
 #	print pt[0], pt[1]
