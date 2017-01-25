@@ -2,8 +2,8 @@
 from random import randint
 
 def generatePoints():
+	print
 	total = input("How many points to generate? ")
-	print total
 
 	f = open('points.input', 'w')
 	for i in range(0,total):
@@ -11,6 +11,9 @@ def generatePoints():
 		y = randint(0,100)
 		f.write(str(x)+" "+str(y)+"\n")
 	f.close()
+	print
+	print "File Created Successfully! - file name:\"points.input\""
+	print
 
 generatePoints()
 
