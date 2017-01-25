@@ -8,17 +8,17 @@ import math
 '''
 
 inputfile = "example.input"
-min = float("inf")
+
 
 def readFile():
-	points =[]
+	pts=[]
 	with open(inputfile) as file:
-		points = [tuple(map(int, l.split(' '))) for l in file]
-	return points
+		pts = [tuple(map(int, l.split(' '))) for l in file]
+	return pts
 
 
-def distance(pointA,pointB):
-	return math.sqrt((pointB[0]-pointA[0])**2 + (pointB[1]-pointA[1])**2)
+def distance(p1,p2):
+	return math.sqrt((p2[0]-p1[0])**2 + (p2[1]-p1[1])**2)
 
 
 def min(p1,p2):
