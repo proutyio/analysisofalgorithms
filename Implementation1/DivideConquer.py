@@ -7,7 +7,7 @@ import math
 	Winter 2017
 '''
 
-inputfile = "example.input"
+inputfile = "points.input"#"example.input"
 
 delta = 0
 min_pts = []
@@ -37,6 +37,8 @@ def closestCrossPairs(pts,dt):
 		j = i+1
 		while pts[i+1][1] - pts[i][1] <= dt and j <= len(pts):
 			d = distance(pts[i], pts[i+1])
+			if d == 0:
+				break
 			cur_pts = (pts[i], pts[i+1])
 			#print cur_pts
 			dm = min(d, dm, cur_pts)
@@ -67,6 +69,6 @@ def divideAndConquer(pts):
 
 		
 print divideAndConquer(readFile())
-min_pts.sort(key=lambda s:s[0])
-for pt in min_pts:
-	print pt[0], pt[1]
+#min_pts.sort(key=lambda s:s[0])
+#for pt in min_pts:
+#	print pt[0], pt[1]

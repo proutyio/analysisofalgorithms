@@ -6,7 +6,7 @@ import math
 	Kyle Prouty
 	Winter 2017
 '''
-inputfile = "example.input"
+inputfile = "points.input"
 
 def readFile():
 	lst =[]
@@ -33,6 +33,7 @@ def printMinDistance(lst):
 	min = bruteForce(lst)
 	print min
 	
+	'''
 	lst.sort(key=lambda x: x[1])
 	lst.sort(key=lambda x: x[0])
 	for a in lst:
@@ -41,5 +42,6 @@ def printMinDistance(lst):
 				tmp = [a,b]
 				if tmp[0][1] > tmp[1][1]:
 					print b, a
+	'''
 
 printMinDistance( readFile() )
