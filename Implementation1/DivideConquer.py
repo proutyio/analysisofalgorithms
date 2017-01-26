@@ -80,7 +80,6 @@ def divideAndConquer(pts):
 		L = pts[:m]
 		R = pts[-m:]
 
-		print L, R
 		dL = divideAndConquer(L)
 		dR = divideAndConquer(R)
 		d = min(dL, dR)
