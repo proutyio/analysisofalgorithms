@@ -18,7 +18,6 @@ min_pts = []
 
 
 def readFile():
-	global pts
 	with open(inputfile) as file:
 		pts = [tuple(map(int, l.split(' '))) for l in file]
 	pts.sort(key=lambda s: s[0])
@@ -78,7 +77,7 @@ def divideAndConquer(pts):
 	else:
 		m = len(pts)/2
 		L = pts[:m]
-		R = pts[-m:]
+		R = pts[m:]
 
 		dL = divideAndConquer(L)
 		dR = divideAndConquer(R)
