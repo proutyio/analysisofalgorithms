@@ -78,12 +78,13 @@ def divideAndConquer(pts):
 		m = len(pts)/2
 		L = pts[:m]
 		R = pts[m:]
-
+		
 		dL = divideAndConquer(L)
 		dR = divideAndConquer(R)
 		d = min(dL, dR)
 
 		midX = findMidX(pts)
+		pts.sort(key=lambda s: s[1])
 		middlePairs = [p for p in pts if p[0] >= midX-delta and p[0] <= midX+delta]
 		deltaMiddle = closestCrossPairs(middlePairs, delta)
 		return deltaMiddle
