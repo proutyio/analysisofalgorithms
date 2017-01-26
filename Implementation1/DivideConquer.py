@@ -7,14 +7,15 @@ import math
 	Winter 2017
 '''
 
-inputfile = "example.input"#"example.input"
+inputfile = "points.input"
 DEBUGGING = True
 
 delta = 999
 min_pts = []
+pts=[]
 
 def readFile():
-	pts=[]
+	global pts
 	with open(inputfile) as file:
 		pts = [tuple(map(int, l.split(' '))) for l in file]
 	return pts
@@ -36,7 +37,7 @@ def minDistance(distance,delta, pts):
 
 def findDistance(a, b):
 	'Updates globals based on distance between two points'
-	global delta, min_pts
+	global delta, min_pts, pts
 	d = distance(a,b)
 	if(d < delta):
 		min_pts = [(a, b)]
@@ -92,5 +93,5 @@ inputs.sort(key=lambda s: s[0]) #sort points by x value - (nlogn)
 d = divideAndConquer(inputs)
 L = findXL(inputs)
 if DEBUGGING:
-	#print 'L is: {}, {}'.format(L, inputs)
+	print 'L is: {}, {}'.format(L, inputs)
 	print 'Delta: {}, closest (side) points are: {}'.format(d, min_pts)

@@ -8,7 +8,7 @@ def generatePoints():
 	f = open('points.input', 'w')
 	for i in range(0,total):
 		x = randint(0,100)
-		y = randint(0,100)
+		y = randint(101,200)
 		f.write(str(x)+" "+str(y)+"\n")
 	f.close()
 	print
