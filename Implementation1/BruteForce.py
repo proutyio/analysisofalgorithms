@@ -29,15 +29,23 @@ def distance(p1, p2):
 def bruteForce(pts):
 	global minlst
 	min = float("inf")
+	x=0
 	for p1 in pts:
+		x+=1
+		j=0
 		for p2 in pts:
-			d = distance(p1, p2)
-			if(d < min) and (d!=0): 
-				min = d
-				minlst = [[p1,p2]]
-			elif(d == min):
-				if not isDuplicate(p1,p2):
-					minlst.append([p1,p2])
+			print x,j
+			if(j==x):
+				break
+			else:
+				d = distance(p1, p2)
+				if(d < min): 
+					min = d
+					minlst = [[p1,p2]]
+				elif(d == min):
+					if not isDuplicate(p1,p2):
+						minlst.append([p1,p2])
+			j+=1
 	return min
 
 
