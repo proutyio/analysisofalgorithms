@@ -3,13 +3,14 @@ import math
 	CS 325 - Implementation 1
 		Divide and Conquer
 
-	Kyle Prouty
+	Kyle Prouty, Levi Willmeth
 	Winter 2017
 '''
 
 inputfile = "example.input"#"example.input"
+DEBUGGING = True
 
-delta = 0
+delta = 999
 min_pts = []
 
 def readFile():
@@ -20,21 +21,30 @@ def readFile():
 
 
 def distance(p1,p2):
+	'Returns distance between two points'
 	return math.sqrt((p2[0]-p1[0])**2 + (p2[1]-p1[1])**2)
 
-
-def min(d,dm, pts):
-	if(d <= dm):
+'''
+def minDistance(distance,delta, pts):
+	if(distance < delta):
+		min_pts = [pts]
+		delta = distance
+	elif(distance == delta):
 		min_pts.append(pts)
-		return d
-	else:
-		return dm
+	return delta
+'''
 
-def min2(p1, p2):
-	''' Returns smaller of two points, based on x '''
-	if(p1[0]<p2[0]):
-		return p1
-	return p2
+def findDistance(a, b):
+	'Updates globals based on distance between two points'
+	global delta, min_pts
+	d = distance(a,b)
+	if(d < delta):
+		min_pts = [(a, b)]
+		delta = d
+	elif(d == delta):
+		min_pts.append(pts)
+	return d
+
 
 def closestCrossPairs(pts,dt):
 	dm = dt
@@ -46,60 +56,41 @@ def closestCrossPairs(pts,dt):
 				break
 			cur_pts = (pts[i], pts[i+1])
 			#print cur_pts
-			dm = min(d, dm, cur_pts)
+			dm = minDistance(d, dm, cur_pts)
 			j = j+1
 			break
 	return dm
 
 
-def findDelta(ptA, ptB):
-	return abs(ptB[0]-ptA[0])
+def findXL(fullList):
+	'Returns midpoint on x line, between the middle two elements'
+	m = len(fullList)/2
+	L = float(fullList[m+1][0]-fullList[m][0])/2+fullList[m][0]
+	#if DEBUGGING: print "Midpoint is between {} and {}.".format(fullList[m][0], fullList[m+1][0]) 
+	return L
 
 
 def divideAndConquer(pts):
-	if len(pts) <= 3:
-
-		d1 = distance(pts[0], pts[1])
-		if d1 < delta:
-			delta = d1
-			min_pairs = (pts[0], pts[1])
-		else if d1 == delta:
-			min_pairs += (pts[0], pts[1])
-
-		if len(pts) == 3:
-			d2 = distance(pts[0], pts[2])
-			if d2 < delta:
-				delta = d2
-				min_pairs = (pts[0], pts[2])
-			else if d2 == delta:
-				min_pairs += (pts[0], pts[2])
-
-			d3 = distance(pts[1], pts[2])
-			if d3 < delta:
-				delta = d3
-				min_pairs = (pts[1], pts[2])
-			else if d3 == delta:
-				min_pairs += (pts[1], pts[2])
-
+	if len(pts) == 2:
+		return findDistance(pts[0], pts[1])
+	elif len(pts) == 3:
+		return min( findDistance(pts[0], pts[2]),findDistance(pts[1], pts[2]) )
+		
 	else:
 		m = len(pts)/2
-		l = pts[:m]
-		r = pts[-m:]
+		L = pts[:m]
+		R = pts[-m:]
 
-		d1 = divideAndConquer(l)
-		d2 = divideAndConquer(r)
-
-		#if d1 and d2 is not None:
-			#delta = min( distance(d1[0],d1[1]), distance(d2[0],d2[1]) )
-		pts.sort(key=lambda s: s[1])
-		print pts
-		dm = closestCrossPairs(pts,2)
-		return dm
+		dL = divideAndConquer(L)
+		dR = divideAndConquer(R)
+		d = min(dL, dR)
+		#if DEBUGGING: print 'dL={}, dR={}, d={}, min_pts={}'.format(dL, dR, d, min_pts)
+		return d
 
 inputs = readFile()
 inputs.sort(key=lambda s: s[0]) #sort points by x value - (nlogn)
-
-print divideAndConquer(inputs)
-#min_pts.sort(key=lambda s:s[0])
-#for pt in min_pts:
-#	print pt[0], pt[1]
+d = divideAndConquer(inputs)
+L = findXL(inputs)
+if DEBUGGING:
+	#print 'L is: {}, {}'.format(L, inputs)
+	print 'Delta: {}, closest (side) points are: {}'.format(d, min_pts)
