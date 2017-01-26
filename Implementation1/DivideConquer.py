@@ -1,4 +1,5 @@
-import math
+#!/usr/bin/python
+import math, sys
 '''
 	CS 325 - Implementation 1
 		Divide and Conquer
@@ -7,9 +8,12 @@ import math
 	Winter 2017
 '''
 
-inputfile = "points.input"
-DEBUGGING = True
+if(len(sys.argv)>1):
+	inputfile = sys.argv[1]
+else:
+	inputfile = 'points.input'
 
+DEBUGGING = True
 delta = 999
 min_pts = []
 pts=[]
@@ -39,11 +43,14 @@ def findDistance(a, b):
 	'Updates globals based on distance between two points'
 	global delta, min_pts, pts
 	d = distance(a,b)
+	# print '({},{}) = {}'.format(a,b,d)
 	if(d < delta):
-		min_pts = [(a, b)]
+		# print '{} < {} for ({},{})'.format(d, delta, a, b)
+		min_pts = [[a, b]]
 		delta = d
 	elif(d == delta):
-		min_pts.append(pts)
+		# print '{} == {} for ({},{})'.format(d, delta, a, b)
+		min_pts.append([a,b])
 	return d
 
 
@@ -67,7 +74,7 @@ def findXL(fullList):
 	'Returns midpoint on x line, between the middle two elements'
 	m = len(fullList)/2
 	L = float(fullList[m+1][0]-fullList[m][0])/2+fullList[m][0]
-	#if DEBUGGING: print "Midpoint is between {} and {}.".format(fullList[m][0], fullList[m+1][0]) 
+	#if DEBUGGING: print "Midpoint is between {} and {}.".format(fullList[m][0], fullList[m+1][0])
 	return L
 
 
@@ -75,14 +82,18 @@ def divideAndConquer(pts):
 	if len(pts) == 2:
 		return findDistance(pts[0], pts[1])
 	elif len(pts) == 3:
-		return min( findDistance(pts[0], pts[2]),findDistance(pts[1], pts[2]) )
-		
+		return min(
+			findDistance(pts[0], pts[1]),
+			findDistance(pts[0], pts[2]),
+			findDistance(pts[1], pts[2])
+		)
 	else:
 		m = len(pts)/2
-		L = pts[:m]
+		L = pts[:m+1]
 		R = pts[-m:]
-
+		# print 'Checking L[{}]'.format(L)
 		dL = divideAndConquer(L)
+		# print 'Checking R[{}]'.format(R)
 		dR = divideAndConquer(R)
 		d = min(dL, dR)
 		#if DEBUGGING: print 'dL={}, dR={}, d={}, min_pts={}'.format(dL, dR, d, min_pts)
@@ -93,5 +104,5 @@ inputs.sort(key=lambda s: s[0]) #sort points by x value - (nlogn)
 d = divideAndConquer(inputs)
 L = findXL(inputs)
 if DEBUGGING:
-	print 'L is: {}, {}'.format(L, inputs)
-	print 'Delta: {}, closest (side) points are: {}'.format(d, min_pts)
+	print 'L is: {} from points {}'.format(L, inputs)
+	print 'Delta: {}, qualifying (side) pairs are: {}'.format(d, min_pts)
