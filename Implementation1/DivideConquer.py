@@ -54,20 +54,30 @@ def findDistance(a, b):
 	return d
 
 
-def closestCrossPairs(pts,dt):
+def closestCrossPairs(pts, dt):
+	'Checks center area for nearby pairs, returns delta'
 	dm = dt
 	for i in range(1, len(pts)-1):
 		j = i+1
 		while pts[i+1][1] - pts[i][1] <= dt and j <= len(pts):
-			d = distance(pts[i], pts[i+1])
-			if d == 0:
-				break
-			cur_pts = (pts[i], pts[i+1])
-			#print cur_pts
-			dm = minDistance(d, dm, cur_pts)
-			j = j+1
-			break
+			d = findDistance(pts[i], pts[i+1])
+			j += 1
 	return dm
+
+# def closestCrossPairs(pts,dt):
+# 	dm = dt
+# 	for i in range(1, len(pts)-1):
+# 		j = i+1
+# 		while pts[i+1][1] - pts[i][1] <= dt and j <= len(pts):
+# 			d = distance(pts[i], pts[i+1])
+# 			if d == 0:
+# 				break
+# 			cur_pts = (pts[i], pts[i+1])
+# 			#print cur_pts
+# 			dm = minDistance(d, dm, cur_pts)
+# 			j = j+1
+# 			break
+# 	return dm
 
 
 def findXL(fullList):
@@ -103,6 +113,20 @@ inputs = readFile()
 inputs.sort(key=lambda s: s[0]) #sort points by x value - (nlogn)
 d = divideAndConquer(inputs)
 L = findXL(inputs)
-if DEBUGGING:
-	print 'L is: {} from points {}'.format(L, inputs)
-	print 'Delta: {}, qualifying (side) pairs are: {}'.format(d, min_pts)
+
+# if DEBUGGING:
+# 	print 'L is: {} from points {}'.format(L, inputs)
+# 	print 'Delta: {}, qualifying (side) pairs are: {}'.format(d, min_pts)
+
+middlePairs = [p for p in inputs if p[0] >= L-delta and p[0] <= L+delta]
+
+deltaMiddle = closestCrossPairs(middlePairs, delta)
+
+# if DEBUGGING:
+# 	print 'deltaMiddle=',deltaMiddle
+# 	print 'Global Delta: {}, qualifying (side) pairs are: {}'.format(d, min_pts)
+
+# Here is the real result:
+print d
+for (a,b) in min_pts:
+	print a,b
