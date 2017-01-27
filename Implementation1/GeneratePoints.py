@@ -1,19 +1,37 @@
+import random
 
-from random import randint
+def randomPoints(total):
+	numberofpoints=total
+	radius = 20
+	rangeX = (0, 2500)
+	rangeY = (0, 2500)
+	deltas = set()
+	for x in range(-radius, radius+1):
+		for y in range(-radius, radius+1):
+			if x*x + y*y <= radius*radius:
+				deltas.add((x,y))
+	randPoints = []
+	excluded = set()
+	i = 0
+	while i<numberofpoints:
+		x = random.randrange(*rangeX)
+		y = random.randrange(*rangeY)
+		if (x,y) in excluded: continue
+		randPoints.append((x,y))
+		i += 1
+		excluded.update((x+dx, y+dy) for (dx,dy) in deltas)
+	return randPoints
+
 
 def generatePoints():
-	print
 	total = input("How many points to generate? ")
 
 	f = open('points.input', 'w')
-	for i in range(0,total):
-		x = randint(0,1000)
-		y = randint(2000,3000)
-		f.write(str(x)+" "+str(y)+"\n")
+	for p in randomPoints(total):
+		f.write(str(p[0])+" "+str(p[1])+"\n")
 	f.close()
-	print
-	print "File Created Successfully! - file name:\"points.input\""
-	print
+	print "\nFile Created Successfully! - file name:\"points.input\"\n"
+
 
 generatePoints()
 
