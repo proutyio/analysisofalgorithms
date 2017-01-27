@@ -1,4 +1,4 @@
-import math, sys
+import math, sys, time
 '''
 	CS 325 - Implementation 1
 		Brute Force
@@ -29,23 +29,17 @@ def distance(p1, p2):
 def bruteForce(pts):
 	global minlst
 	min = float("inf")
-	x=0
-	for p1 in pts:
-		x+=1
-		j=0
-		for p2 in pts:
-			print x,j
-			if(j==x):
-				break
-			else:
-				d = distance(p1, p2)
-				if(d < min): 
-					min = d
-					minlst = [[p1,p2]]
-				elif(d == min):
-					if not isDuplicate(p1,p2):
-						minlst.append([p1,p2])
-			j+=1
+	size = len(pts)
+	
+	for i in range(0,size):
+		for j in range(i+1,size):
+			d = distance(pts[i], pts[j])
+			if(d < min): 
+				min = d
+				minlst = [[pts[i],pts[j]]]
+			elif(d == min):
+				if not isDuplicate(pts[i],pts[j]):
+					minlst.append([pts[i],pts[j]])
 	return min
 
 
@@ -57,6 +51,10 @@ def isDuplicate(p1, p2):
 	return False
 	
 
+start = time.time()
 print bruteForce( readFile() )
+end = time.time()
+print (end-start)
+
 for (a,b) in minlst:
 	print a,b

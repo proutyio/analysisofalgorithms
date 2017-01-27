@@ -1,5 +1,5 @@
 #!/usr/bin/python
-import math, sys
+import math, sys, time
 '''
 	CS 325 - Implementation 1
 		Divide and Conquer
@@ -98,34 +98,11 @@ def isDuplicate(p1, p2):
 
 
 
+start = time.time()
 print divideAndConquer( readFile() )
+end = time.time()
+print (end-start)
+
+min_pts.sort(key=lambda s:s[1])
 for (a,b) in min_pts:
 	print a,b
-
-
-
-
-
-
-
-#inputs = readFile()
-#print inputs
-#print
-
-#d = divideAndConquer(inputs)
-#L = findMidPoint(inputs)
-
-# if DEBUGGING:
-# 	print 'L is: {} from points {}'.format(L, inputs)
-# 	print 'Delta: {}, qualifying (side) pairs are: {}'.format(d, min_pts)
-
-#middlePairs = [p for p in inputs if p[0] >= L-delta and p[0] <= L+delta]
-
-#deltaMiddle = closestCrossPairs(middlePairs, delta)
-
-# if DEBUGGING:
-# 	print 'deltaMiddle=',deltaMiddle
-# 	print 'Global Delta: {}, qualifying (side) pairs are: {}'.format(d, min_pts)
-
-# Here is the real result:
-

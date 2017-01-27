@@ -1,5 +1,5 @@
 #!/usr/bin/python
-import math, sys
+import math, sys, time
 '''
 	CS 325 - Implementation 1
 		Divide and Conquer
@@ -98,7 +98,11 @@ def isDuplicate(p1, p2):
 
 
 
+start = time.time()
 print divideAndConquer( readFile() )
+end = time.time()
+print (end-start)
+
 for (a,b) in min_pts:
 	print a,b
 
