@@ -18,7 +18,6 @@ else:
 def readFile():
 	with open(inputfile) as file:
 		pts = [tuple(map(int, l.split(' '))) for l in file]
-	pts.sort(key=lambda s:s[1])
 	pts.sort(key=lambda s:s[0])
 	return pts
 
