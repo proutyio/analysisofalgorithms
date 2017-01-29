@@ -1,18 +1,19 @@
-import math, sys, time
+#!/usr/bin/python
 '''
 	CS 325 - Implementation 1
 		Brute Force
 
-	Kyle Prouty
+	Kyle Prouty, Levi Willmeth
 	Winter 2017
 '''
+import math, sys, time
+
 minlst=[]
 
 if(len(sys.argv)>1):
 	inputfile = sys.argv[1]
 else:
 	inputfile = 'example.input'
-
 
 def readFile():
 	with open(inputfile) as file:
@@ -30,11 +31,11 @@ def bruteForce(pts):
 	global minlst
 	min = float("inf")
 	size = len(pts)
-	
+
 	for i in range(0,size):
 		for j in range(i+1,size):
 			d = distance(pts[i], pts[j])
-			if(d < min): 
+			if(d < min):
 				min = d
 				minlst = [[pts[i],pts[j]]]
 			elif(d == min):
@@ -49,12 +50,8 @@ def isDuplicate(p1, p2):
 		if((p[0]==p1) and (p[1]==p2)) or ((p[0]==p2) and (p[1]==p1)):
 			return True
 	return False
-	
 
-start = time.time()
+
 print bruteForce( readFile() )
-end = time.time()
-print (end-start)
-
 for (a,b) in minlst:
 	print a,b

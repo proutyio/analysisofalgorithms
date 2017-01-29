@@ -1,5 +1,4 @@
 #!/usr/bin/python
-import math, sys, time
 '''
 	CS 325 - Implementation 1
 		Divide and Conquer
@@ -7,6 +6,7 @@ import math, sys, time
 	Kyle Prouty, Levi Willmeth
 	Winter 2017
 '''
+import math, sys, time
 
 if(len(sys.argv)>1):
 	inputfile = sys.argv[1]
@@ -16,7 +16,6 @@ else:
 delta = float("inf")
 min_pts = []
 
-
 def readFile():
 	with open(inputfile) as file:
 		pts = [tuple(map(int, l.split(' '))) for l in file]
@@ -25,7 +24,7 @@ def readFile():
 
 
 
-def distance(p1,p2): 
+def distance(p1,p2):
 	'Returns distance between two points'
 	return math.sqrt((p2[0]-p1[0])**2 + (p2[1]-p1[1])**2)
 
@@ -45,7 +44,7 @@ def findDistance(p1, p2):
 
 
 
-def closestCrossPairs(pts, dt): 
+def closestCrossPairs(pts, dt):
 	'Checks center area for nearby pairs, returns delta'
 	dm = dt
 	for i in range(1, len(pts)-1):
@@ -57,7 +56,7 @@ def closestCrossPairs(pts, dt):
 
 
 
-def findMidX(pts): 
+def findMidX(pts):
 	'Returns midpoint on x line, between the middle two elements'
 	m = len(pts)/2
 	midX = float(pts[m+1][0]-pts[m][0])/2+pts[m][0]
@@ -78,7 +77,7 @@ def divideAndConquer(pts):
 		m = len(pts)/2
 		L = pts[:m]
 		R = pts[m:]
-		
+
 		dL = divideAndConquer(L)
 		dR = divideAndConquer(R)
 		d = min(dL, dR)
@@ -97,12 +96,7 @@ def isDuplicate(p1, p2):
 	return False
 
 
-
-start = time.time()
 print divideAndConquer( readFile() )
-end = time.time()
-print (end-start)
-
 for (a,b) in min_pts:
 	print a,b
 
@@ -132,4 +126,3 @@ for (a,b) in min_pts:
 # 	print 'Global Delta: {}, qualifying (side) pairs are: {}'.format(d, min_pts)
 
 # Here is the real result:
-
