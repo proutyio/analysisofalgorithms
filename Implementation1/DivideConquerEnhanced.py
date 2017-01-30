@@ -19,8 +19,8 @@ min_pts = []
 def readFile():
 	with open(inputfile) as file:
 		pts = [tuple(map(int, l.split(' '))) for l in file]
-	pts.sort(key=lambda s: s[1])
 	pts.sort(key=lambda s: s[0])
+	pts.sort(key=lambda s: s[1])
 	return pts
 
 
@@ -39,8 +39,8 @@ def findDistance(p1, p2):
 		min_pts = [[p1, p2]]
 		delta = d
 	elif(d == delta):
-		if not isDuplicate(p1,p2):
-			min_pts.append([p1,p2])
+		#if not isDuplicate(p1,p2):
+		min_pts.append([p1,p2])
 	return d
 
 

@@ -91,38 +91,20 @@ def divideAndConquer(pts):
 
 def isDuplicate(p1, p2):
 	for p in min_pts:
-		if(p[0]==p1) and (p[1]==p2):
+		if((p[0]==p1) and (p[1]==p2)) or ((p[0]==p2) and (p[1]==p1)):
 			return True
 	return False
 
 
+def sortPoints(lst):
+	for x in range(0,len(lst)):
+		if lst[x][0][0] > lst[x][1][0]:
+			lst[x] = (lst[x][1],lst[x][0])
+	return lst
+
+
 print divideAndConquer( readFile() )
+
+min_pts = sortPoints(min_pts)
 for (a,b) in min_pts:
 	print a,b
-
-
-
-
-
-
-
-#inputs = readFile()
-#print inputs
-#print
-
-#d = divideAndConquer(inputs)
-#L = findMidPoint(inputs)
-
-# if DEBUGGING:
-# 	print 'L is: {} from points {}'.format(L, inputs)
-# 	print 'Delta: {}, qualifying (side) pairs are: {}'.format(d, min_pts)
-
-#middlePairs = [p for p in inputs if p[0] >= L-delta and p[0] <= L+delta]
-
-#deltaMiddle = closestCrossPairs(middlePairs, delta)
-
-# if DEBUGGING:
-# 	print 'deltaMiddle=',deltaMiddle
-# 	print 'Global Delta: {}, qualifying (side) pairs are: {}'.format(d, min_pts)
-
-# Here is the real result:
