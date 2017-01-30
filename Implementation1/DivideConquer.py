@@ -13,9 +13,6 @@ if(len(sys.argv)>1):
 else:
 	inputfile = 'example.input'
 
-delta = float("inf")
-min_pts = []
-
 def readFile():
 	with open(inputfile) as file:
 		pts = [tuple(map(int, l.split(' '))) for l in file]
@@ -23,106 +20,61 @@ def readFile():
 	return pts
 
 
-
 def distance(p1,p2):
 	'Returns distance between two points'
-	return math.sqrt((p2[0]-p1[0])**2 + (p2[1]-p1[1])**2)
+	return math.sqrt((p2[0]-p1[0])**2 + (p2[1]-p1[1])**2), [(p1,p2)]
 
 
-
-def findDistance(p1, p2):
-	'Updates globals based on distance between two points'
-	global delta, min_pts
-	d = distance(p1,p2)
-	if(d < delta):
-		min_pts = [[p1, p2]]
-		delta = d
-	elif(d == delta):
-		if not isDuplicate(p1,p2):
-			min_pts.append([p1,p2])
-	return d
-
-
-
-def closestCrossPairs(pts, dt):
+def closestCrossPairs(pts, best):
 	'Checks center area for nearby pairs, returns delta'
-	dm = dt
-	for i in range(1, len(pts)-1):
+	for i in range(len(pts)):
 		j = i+1
-		while pts[i+1][1] - pts[i][1] <= dt and j <= len(pts):
-			d = findDistance(pts[i], pts[i+1])
+		while j<len(pts) and pts[j][1]-pts[i][1]<=best[0]:
+			best = compareTwo(distance(pts[i], pts[j]), best)
 			j += 1
-	return dm
+	return best
 
 
+def compareTwo(a, b):
+	'Returns smallest or combined list of a and b as (f, [(f, f)])'
+	if a[0]<b[0]:
+		return a
+	if a[0]==b[0]:
+		return a[0], a[1]+b[1]
+	return b
 
-def findMidX(pts):
-	'Returns midpoint on x line, between the middle two elements'
-	m = len(pts)/2
-	midX = float(pts[m+1][0]-pts[m][0])/2+pts[m][0]
-	return midX
 
+def minOfThree(a, b, c):
+	'Returns smallest or combined list of 3 smallest points'
+	s = compareTwo(distance(a, b), distance(a, c))
+	return compareTwo(s, distance(b, c))
 
 
 def divideAndConquer(pts):
+	'Returns distance and list of points formatted as (dist, [(x,y),...])'
 	if len(pts) == 2:
-		return findDistance(pts[0], pts[1])
+		return distance(pts[0], pts[1])
 	elif len(pts) == 3:
-		return min(
-			findDistance(pts[0], pts[1]),
-			findDistance(pts[0], pts[2]),
-			findDistance(pts[1], pts[2])
-		)
-	else:
+		return minOfThree(pts[0], pts[1], pts[2])
+	else: # More than 3 elements means we need to divide and conquer.
 		m = len(pts)/2
 		L = pts[:m]
 		R = pts[m:]
 
 		dL = divideAndConquer(L)
 		dR = divideAndConquer(R)
-		d = min(dL, dR)
+		bestSides = compareTwo(dL, dR) # best of left and right halves
+		delta = bestSides[0]
 
-		midX = findMidX(pts)
-		pts.sort(key=lambda s: s[1])
-		middlePairs = [p for p in pts if p[0] >= midX-delta and p[0] <= midX+delta]
-		deltaMiddle = closestCrossPairs(middlePairs, delta)
-		return deltaMiddle
+		# find midpoint between two centermost array elements
+		midX = float(pts[m+1][0]-pts[m][0])/2+pts[m][0]
+		middlePairs = [p for p in pts if p[0]>=midX-delta and p[0]<=midX+delta]
+		# sort by y during each layer of recursion
+		middlePairs.sort(key=lambda s: s[1])
+		return closestCrossPairs(middlePairs, bestSides)
 
-
-def isDuplicate(p1, p2):
-	for p in min_pts:
-		if(p[0]==p1) and (p[1]==p2):
-			return True
-	return False
-
-
-print divideAndConquer( readFile() )
-for (a,b) in min_pts:
-	print a,b
-
-
-
-
-
-
-
-#inputs = readFile()
-#print inputs
-#print
-
-#d = divideAndConquer(inputs)
-#L = findMidPoint(inputs)
-
-# if DEBUGGING:
-# 	print 'L is: {} from points {}'.format(L, inputs)
-# 	print 'Delta: {}, qualifying (side) pairs are: {}'.format(d, min_pts)
-
-#middlePairs = [p for p in inputs if p[0] >= L-delta and p[0] <= L+delta]
-
-#deltaMiddle = closestCrossPairs(middlePairs, delta)
-
-# if DEBUGGING:
-# 	print 'deltaMiddle=',deltaMiddle
-# 	print 'Global Delta: {}, qualifying (side) pairs are: {}'.format(d, min_pts)
-
-# Here is the real result:
+distance, points = divideAndConquer( readFile() )
+print distance
+points = sorted(set(points))
+for p in points:
+	print "{} {} {} {}".format(p[0][0], p[0][1], p[1][0], p[1][1])
