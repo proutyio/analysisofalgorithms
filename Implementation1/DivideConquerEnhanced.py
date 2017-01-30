@@ -1,7 +1,7 @@
 #!/usr/bin/python
 '''
 	CS 325 - Implementation 1
-		Divide and Conquer
+	Enhanced Divide and Conquer
 
 	Kyle Prouty, Levi Willmeth
 	Winter 2017
@@ -16,8 +16,8 @@ else:
 def readFile():
 	with open(inputfile) as file:
 		pts = [tuple(map(int, l.split(' '))) for l in file]
-	pts.sort(key=lambda s: (s[0], s[1]))
-	return pts
+	pts.sort(key=lambda s: s[0])
+	return pts, sorted(pts, key=lambda s: s[1])
 
 
 def distance(p1,p2):
@@ -27,9 +27,12 @@ def distance(p1,p2):
 
 def closestCrossPairs(pts, best):
 	'Checks center area for nearby pairs, returns delta'
+	# print best[0], pts
 	for i in range(len(pts)):
 		j = i+1
+		# print 'Checking within ', best[0],' of i=', i, ', j=', j
 		while j<len(pts) and pts[j][1]-pts[i][1]<=best[0]:
+			# print "i={0}, j={1} found {2}".format(i, j, distance(pts[i], pts[j]))
 			best = compareTwo(distance(pts[i], pts[j]), best)
 			j += 1
 	return best
@@ -68,10 +71,12 @@ def divideAndConquer(pts):
 
 		# find midpoint between two centermost array elements
 		midX = float(pts[m+1][0]-pts[m][0])/2+pts[m][0]
-		middlePairs = [p for p in pts if p[0]>=midX-delta and p[0]<=midX+delta]
+		middlePairs = [p for p in pts_y if p[0]>=midX-delta and p[0]<=midX+delta]
+		# middlePairs.sort(key=lambda s: s[1])
 		return closestCrossPairs(middlePairs, bestSides)
 
-distance, points = divideAndConquer( readFile() )
+pts_x, pts_y = readFile()
+distance, points = divideAndConquer( pts_x )
 print distance
 points = sorted(set(points))
 for p in points:

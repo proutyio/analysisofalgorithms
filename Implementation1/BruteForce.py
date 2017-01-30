@@ -1,7 +1,7 @@
 #!/usr/bin/python
 '''
 	CS 325 - Implementation 1
-		Brute Force
+	Brute Force
 
 	Kyle Prouty, Levi Willmeth
 	Winter 2017

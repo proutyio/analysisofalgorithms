@@ -1,7 +1,7 @@
 #!/usr/bin/python
 '''
 	CS 325 - Implementation 1
-		Divide and Conquer
+	Divide and Conquer
 
 	Kyle Prouty, Levi Willmeth
 	Winter 2017
