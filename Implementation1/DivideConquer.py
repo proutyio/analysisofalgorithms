@@ -68,10 +68,18 @@ def divideAndConquer(pts):
 
 		# find midpoint between two centermost array elements
 		midX = float(pts[m+1][0]-pts[m][0])/2+pts[m][0]
-		middlePairs = [p for p in pts if p[0]>=midX-delta and p[0]<=midX+delta]
+		
+		middlePts = []
+		for i in range(len(pts)):
+			if pts[i][0]>=midX-delta:
+				while i<len(pts) and pts[i][0]<=midX+delta:
+					middlePts.append(pts[i])
+					i += 1
+				break
+		#middlePairs = [p for p in pts if p[0]>=midX-delta and p[0]<=midX+delta]
 		# sort by y during each layer of recursion
-		middlePairs.sort(key=lambda s: s[1])
-		return closestCrossPairs(middlePairs, bestSides)
+		middlePts.sort(key=lambda s: s[1])
+		return closestCrossPairs(middlePts, bestSides)
 
 distance, points = divideAndConquer( readFile() )
 print distance
