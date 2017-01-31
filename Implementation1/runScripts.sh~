@@ -1,9 +1,9 @@
 #!/bin/sh
 
-start=$(date +%s%6N)
-python BruteForce.py $1 > output_BruteForce.txt
-end=$(date +%s%6N)
-echo "BruteForce ran $1 in `expr $end - $start` ms."
+#start=$(date +%s%6N)
+#python BruteForce.py $1 > output_BruteForce.txt
+#end=$(date +%s%6N)
+#echo "BruteForce ran $1 in `expr $end - $start` ms."
 
 echo "Starting DivideConquer.py"
 start=$(date +%s%6N)

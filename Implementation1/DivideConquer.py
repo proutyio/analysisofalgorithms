@@ -22,7 +22,7 @@ def readFile():
 
 def distance(p1,p2):
 	'Returns distance between two points'
-	return math.sqrt((p2[0]-p1[0])**2 + (p2[1]-p1[1])**2), [(p1,p2)]
+	return math.sqrt((p2[0]-p1[0])**2 + (p2[1]-p1[1])**2), sorted([(p1,p2)])
 
 
 def closestCrossPairs(pts, best):
@@ -83,6 +83,7 @@ def divideAndConquer(pts):
 
 distance, points = divideAndConquer( readFile() )
 print distance
-points = sorted(set(points))
+print points
+points = set(sorted(points))
 for p in points:
 	print "{} {} {} {}".format(p[0][0], p[0][1], p[1][0], p[1][1])

@@ -26,7 +26,7 @@ def distance(p1,p2):
 
 def closestCrossPairs(pts, best):
 	'Checks center area for nearby pairs, returns delta'
-	print best[0], pts, len(pts)
+	#print best[0], pts, len(pts)
 	for i in range(len(pts)):
 		j = i+1
 		# print 'Checking within ', best[0],' of i=', i, ', j=', j
@@ -73,12 +73,13 @@ def divideAndConquer(pts):
 		# Note!  Here is the problem!  middlePairs should be generated from pts_y
 		# but not using a list comp, you should carefully generate it by hand to
 		# be more efficient.  Don't check past x and maybe even use binary search to find x
-		middlePairs = [p for p in pts if p[0]>=midX-delta and p[0]<=midX+delta]
+		middlePairs = [p for p in pts_y if p[0]>=midX-delta and p[0]<=midX+delta]
 		# middlePairs.sort(key=lambda s: s[1])
 		return closestCrossPairs(middlePairs, bestSides)
 
 pts = readFile()
 pts.sort(key=lambda s: s[0])
+pts_y = sorted(pts, key=lambda s: s[1])
 
 distance, points = divideAndConquer(pts)
 print distance

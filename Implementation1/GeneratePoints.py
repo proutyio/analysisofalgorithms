@@ -2,9 +2,9 @@ import random
 
 def randomPoints(total):
 	numberofpoints=total
-	radius = 20
-	rangeX = (0, 2500)
-	rangeY = (0, 2500)
+	radius = 1
+	rangeX = (0, 100000)
+	rangeY = (0, 100000)
 	deltas = set()
 	for x in range(-radius, radius+1):
 		for y in range(-radius, radius+1):
