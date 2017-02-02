@@ -74,10 +74,11 @@ def divideAndConquer(pts):
 		# print L, delta, middlePairs
 		return closestCrossPairs(middlePairs, bestSides)
 
-pts_x = readFile()
-pts_y = sorted(pts_x, key=lambda s: s[1])
-pts_x.sort(key=lambda s: s[0])
-distance, points = divideAndConquer(pts_x)
+pts = readFile()
+pts.sort(key=lambda s: s[0])
+pts_y = sorted(pts, key=lambda s: s[1])
+
+distance, points = divideAndConquer(pts)
 print distance
 points = sorted(set(points))
 for p in points:

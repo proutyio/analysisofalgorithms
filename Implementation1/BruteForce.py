@@ -54,3 +54,6 @@ def isDuplicate(p1, p2):
 print bruteForce( readFile() )
 for (a,b) in minlst:
 	print a,b
+print '---'
+for p in sorted(minlst):
+	print "{} {} {} {}".format(p[0][0], p[0][1], p[1][0], p[1][1])
