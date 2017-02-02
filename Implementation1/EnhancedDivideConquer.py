@@ -18,7 +18,7 @@ min_pts = []
 
 def readFile():
 	with open(inputfile) as file:
-		pts = [tuple(map(int, l.split(' '))) for l in file]
+		pts = [tuple(map(float, l.split(' '))) for l in file]
 	pts.sort(key=lambda s: s[0]) # sort by x
 	return pts
 
@@ -95,6 +95,7 @@ def isDuplicate(p1, p2):
 	return False
 
 def sortPoints(lst):
+	lst.sort(key=lambda x: [x[0], x[1]])
 	for x in range(0,len(lst)):
 		if lst[x][0][0] > lst[x][1][0]:
 			lst[x] = (lst[x][1],lst[x][0])
@@ -102,11 +103,11 @@ def sortPoints(lst):
 			lst[x] = (lst[x][1],lst[x][0])
 	return lst
 
-
 pts_x = readFile()
 pts_y = sorted(pts_x, key=lambda s:s[1]) # sort by y
 
 print divideAndConquer( pts_x )
+
 min_pts = sortPoints(min_pts)
 for (a,b) in min_pts:
 	print a,b
