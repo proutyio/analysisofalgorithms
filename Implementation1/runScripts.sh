@@ -6,11 +6,11 @@ end=$(date +%s%6N)
 echo "BruteForce ran $1 in `expr $end - $start` ms."
 
 start=$(date +%s%6N)
-python DivideConquer.py $1 > output_divideConquer.txt
+python DivideConquer.py $1 > output_DivideConquer.txt
 end=$(date +%s%6N)
 echo "DivideConquer ran $1 in `expr $end - $start` ms."
 
 start=$(date +%s%6N)
-python DivideConquerEnhanced.py $1 > output_divideConquerEnhanced.txt
+python EnhancedDivideConquer.py $1 > output_EnhancedDivideConquer.txt
 end=$(date +%s%6N)
-echo "DivideConquerEnhanced ran $1 in `expr $end - $start` ms."
+echo "EnhancedDivideConquer ran $1 in `expr $end - $start` ms."
