@@ -36,10 +36,10 @@ def bruteForce(pts):
 			d = distance(pts[i], pts[j])
 			if(d < min):
 				min = d
-				minlst = [[pts[i],pts[j]]]
+				minlst = sorted([[pts[i],pts[j]]])
 			elif(d == min):
 				if not isDuplicate(pts[i],pts[j]):
-					minlst.append([pts[i],pts[j]])
+					minlst.append(sorted([pts[i],pts[j]]))
 	return min
 
 
@@ -62,6 +62,10 @@ def sortPoints(lst):
 
 print bruteForce( readFile() )
 
-minlst = sortPoints(minlst)
+# print minlst
+# print minlst.sort()
+# print minlst.sort(key=lambda x: [x[0][0], x[0][1]])
+minlst.sort(key=lambda x: [x[0][0], x[0][1]])
+# minlst = sortPoints(minlst)
 for (a,b) in minlst:
 	print a,b

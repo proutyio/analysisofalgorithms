@@ -100,6 +100,8 @@ def sortPoints(lst):
 	for x in range(0,len(lst)):
 		if lst[x][0][0] > lst[x][1][0]:
 			lst[x] = (lst[x][1],lst[x][0])
+		elif lst[x][0][1] > lst[x][1][1]:
+			lst[x] = (lst[x][1],lst[x][0])
 	return lst
 
 
