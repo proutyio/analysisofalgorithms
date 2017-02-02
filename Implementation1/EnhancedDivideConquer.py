@@ -19,8 +19,7 @@ min_pts = []
 def readFile():
 	with open(inputfile) as file:
 		pts = [tuple(map(int, l.split(' '))) for l in file]
-	pts.sort(key=lambda s: s[0])
-	pts.sort(key=lambda s: s[1])
+	pts.sort(key=lambda s: s[0]) # sort by x
 	return pts
 
 
@@ -39,8 +38,8 @@ def findDistance(p1, p2):
 		min_pts = [[p1, p2]]
 		delta = d
 	elif(d == delta):
-		#if not isDuplicate(p1,p2):
-		min_pts.append([p1,p2])
+		if not isDuplicate(p1,p2):
+			min_pts.append([p1,p2])
 	return d
 
 
@@ -84,7 +83,7 @@ def divideAndConquer(pts):
 		d = min(dL, dR)
 
 		midX = findMidX(pts)
-		middlePairs = [p for p in pts if p[0] >= midX-delta and p[0] <= midX+delta]
+		middlePairs = [p for p in pts_y if p[0] >= midX-delta and p[0] <= midX+delta]
 		deltaMiddle = closestCrossPairs(middlePairs, delta)
 		return deltaMiddle
 
@@ -97,7 +96,9 @@ def isDuplicate(p1, p2):
 
 
 
-print divideAndConquer( readFile() )
-min_pts.sort(key=lambda s:s[1])
+pts_x = readFile()
+pts_y = sorted(pts_x, key=lambda s:s[1]) # sort by y
+
+print divideAndConquer( pts_x )
 for (a,b) in min_pts:
 	print a,b
