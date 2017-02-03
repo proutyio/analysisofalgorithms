@@ -1,3 +1,4 @@
 output_*
 points.input
+points.*.input
 *.swp

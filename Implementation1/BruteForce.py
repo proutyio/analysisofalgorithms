@@ -3,7 +3,7 @@
 	CS 325 - Implementation 1
 		Brute Force
 
-	Kyle Prouty, Levi Willmeth
+	Kyle Prouty, Levi Willmeth, Andrew Morrill
 	Winter 2017
 '''
 import math, sys, time

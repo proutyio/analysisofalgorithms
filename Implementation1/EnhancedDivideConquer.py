@@ -3,7 +3,7 @@
 	CS 325 - Implementation 1
 		Enhanced Divide and Conquer
 
-	Kyle Prouty, Levi Willmeth
+	Kyle Prouty, Levi Willmeth, Andrew Morrill
 	Winter 2017
 '''
 import math, sys, time
