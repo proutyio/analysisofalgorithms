@@ -30,4 +30,4 @@ def printTable(table):
 		print r
 
 
-printTable( editDistance("intention","execution") )
+printTable( editDistance("fun","execution") )

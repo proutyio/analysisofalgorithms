@@ -106,8 +106,16 @@ def sortPoints(lst):
 pts_x = readFile()
 pts_y = sorted(pts_x, key=lambda s:s[1]) # sort by y
 
+
+start = time.time()
+
 print divideAndConquer( pts_x )
 
+end = time.time()
+print (end-start)
+
+'''
 min_pts = sortPoints(min_pts)
 for (a,b) in min_pts:
 	print a,b
+'''

@@ -61,8 +61,15 @@ def sortPoints(lst):
 	return lst
 
 
+start = time.time()
+
 print bruteForce( readFile() )
 
+end = time.time()
+print (end-start)
+
+'''
 minlst = sortPoints(minlst)
 for (a,b) in minlst:
 	print a,b
+'''
