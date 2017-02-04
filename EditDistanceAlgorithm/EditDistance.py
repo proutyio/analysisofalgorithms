@@ -21,11 +21,13 @@ def editDistance(strA, strB):
 	            table[x][y] = 1+min(table[x][y-1],
 	                                table[x-1][y],
 	                                table[x-1][y-1])     
-	return table
+	return (table[lenA][lenB],table)
 
 
 def printTable(table):
-	for r in table:
+	print "\n---------\nEdits: ",table[0],"\n---------"
+	for r in table[1]:
 		print r
+
 
 printTable( editDistance("intention","execution") )
