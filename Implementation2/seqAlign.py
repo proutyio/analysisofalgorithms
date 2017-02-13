@@ -23,8 +23,10 @@ def printA():
 lenTop = len(topWord)
 lenSide = len(sideWord)
 
-A = [[x+y for x in range(lenTop)] for y in range(lenSide)]
+# A = [[x+y if (x==0 or y==0) for x in range(lenTop)] for y in range(lenSide)]
+A = [[x+y if (x==0 or y==0) else 0 for x in range(lenSide)] for y in range(lenTop)]
 A[0][0] = 0
+printA()
 
 for x in range(1,lenTop):
     # print 'x = ', x
