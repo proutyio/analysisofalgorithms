@@ -1,5 +1,7 @@
 import sys, re
 
+DEBUGGING = True
+
 if(len(sys.argv)>2):
     costFile = sys.argv[1]
     seqFile = sys.argv[2]
@@ -15,7 +17,7 @@ def readInputFile(cFile):
             a, b = line.split(',')
             align('-'+a, '-'+b[:-1])
             i += 1
-            if i is 3:
+            if i is 1:
                 sys.exit(0)
 
 def readCostFile(cFile):
@@ -74,37 +76,73 @@ def align(topWord, sideWord):
         ''' Returns cost to convert from one letter to another '''
         return int(costs[a][b])
 
+    def walkHome(x, y, tW, sW):
+        ''' Walk back to the beginning, creating the changed strings '''
+        if x is 0 and y is 0:
+            return tW, sW
+        if DEBUGGING: print x, y, B[x][y],
+        if B[x][y] == '-':
+            sW = '-'+sW
+            tW = topWord[x]+tW
+            x -= 1
+        elif B[x][y] == '|':
+            sW = sideWord[y]+sW
+            tW = '-'+tW
+            y -= 1
+        else:
+            sW = sideWord[y]+sW
+            tW = topWord[x]+tW
+            x -= 1
+            y -= 1
+        if DEBUGGING: print tW, sW
+        return walkHome(x, y, tW, sW)
+
     # Save word sizes for later
     lenTop = len(topWord)
     lenSide = len(sideWord)
 
     # Set up the (mostly empty) array
     A = [[0 for x in range(lenSide)] for y in range(lenTop)]
+    B = [[0 for x in range(lenSide)] for y in range(lenTop)]
     for i in range(1,lenTop):
         A[i][0] = A[i-1][0] + getCost('-', topWord[i])
+        B[i][0] = '-'
     for i in range(1, lenSide):
         A[0][i] = A[0][i-1] + getCost('-', sideWord[i])
+        B[0][i] = '|'
 
-    # print '=== Initial Array ==='
-    # printArr(A)
-    print "Calculating the alignment cost between:"
-    print topWord
-    print sideWord
-    print '=== Cost Array ==='
-    printCosts(costs)
-    print '=== Calculating ==='
-    # Fill the cost array to find the total cost
     for x in range(1,lenTop):
         for y in range(1,lenSide):
             t, s = topWord[x], sideWord[y]
-            A[x][y] = min(
-                A[x-1][y] + getCost('-', t), # insert - into top word
-                A[x][y-1] + getCost(s, '-'), # insert - into side word
-                A[x-1][y-1] + getCost(t, s)  # align characters
+            # if y is 1:
+            #     print t, s,
+            #     print (A[x-1][y], A[x-1][y] + getCost('-', t), '-'),
+            #     print (A[x-1][y-1], A[x-1][y-1] + getCost(t, s), '\\'),
+            #     print (A[x][y-1], A[x][y-1] + getCost(s, '-'), '|')
+            A[x][y], B[x][y] = min(
+                (A[x-1][y] + getCost('-', t), '-'),  # insert - into top word
+                (A[x][y-1] + getCost(s, '-'), '|'),  # insert - into side word
+                (A[x-1][y-1] + getCost(t, s), '\\')   # align characters
             )
 
-    print 'The resulting array:'
-    printArr(A)
+    # Walk backwards through the array to find the two strings
+    t, s = walkHome(lenTop-1, lenSide-1, '', '')
+
+    if DEBUGGING:
+        # print "Calculating the alignment cost between:"
+        # print topWord
+        # print sideWord
+        print '=== Cost Array ==='
+        printCosts(costs)
+        print 'The resulting array:'
+        printArr(A)
+        print '=== Path Home ==='
+        printArr(B)
+        print '=== Resulting Strings ==='
+        print '{},{}:{}'.format(t, s, A[lenTop-1][lenSide-1])
+        # print getCost('A', '-')
+        # print getCost('A', 'C')
+        # print getCost('-', 'A')
 
 # Read in the costs from file
 costs, chars = readCostFile(costFile)
