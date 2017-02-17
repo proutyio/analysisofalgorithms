@@ -1,6 +1,6 @@
 import sys, re
 
-DEBUGGING = True
+DEBUGGING = False
 
 if(len(sys.argv)>2):
     costFile = sys.argv[1]
@@ -17,8 +17,8 @@ def readInputFile(cFile):
             a, b = line.split(',')
             align('-'+a, '-'+b[:-1])
             i += 1
-            if i is 1:
-                sys.exit(0)
+            # if i is 10:
+                # sys.exit(0)
 
 def readCostFile(cFile):
     ''' Read the cost array into a dictionary '''
@@ -139,7 +139,7 @@ def align(topWord, sideWord):
         print '=== Path Home ==='
         printArr(B)
         print '=== Resulting Strings ==='
-        print '{},{}:{}'.format(t, s, A[lenTop-1][lenSide-1])
+    print '{},{}:{}'.format(t, s, A[lenTop-1][lenSide-1])
         # print getCost('A', '-')
         # print getCost('A', 'C')
         # print getCost('-', 'A')
