@@ -5,29 +5,36 @@ DEBUGGING = False
 if(len(sys.argv)>2):
     costFile = sys.argv[1]
     seqFile = sys.argv[2]
+    outFile = False
 else:
-    print "Usage: python seqAlign <cost file> <sequence file>"
-    sys.exit()
+    costFile = 'imp2cost.txt'
+    seqFile = 'imp2input.txt'
+    outFile = 'imp2output.txt'
+    # print "Usage: python seqAlign <cost file> <sequence file>"
+    # sys.exit()
 
 def readInputFile(cFile):
     ''' Read the input strings in from a file '''
+    # Overwrite output file, if it exists
+    if outFile:
+        open(outFile, 'w+').close()
     i = 0
     with open(cFile, 'r') as file:
         for line in file:
             a, b = line.split(',')
             align('-'+a, '-'+b[:-1])
-            i += 1
+            # Limit number of lines from input file
+            # i += 1
             # if i is 10:
                 # sys.exit(0)
 
 def readCostFile(cFile):
-    ''' Read the cost array into a dictionary '''
+    ''' Read the cost array into a dictionary of key:value pairs'''
     costs = {}
     with open(cFile, 'r') as file:
         chars = ''
         for f in file:
-            f = f.strip('\n')
-            f = f.split(',')
+            f = f.strip('\n').split(',')
             if f[0] is '*':
                 # Read in available chars but skip the leading *
                 chars = f
@@ -36,7 +43,6 @@ def readCostFile(cFile):
             else:
                 # Treat this line as costs for the far left char
                 for i, c in enumerate(f):
-                    # print f[0], chars[i], ' => ', c
                     costs[f[0]][chars[i]] = c
     return costs, chars[1:]
 
@@ -104,6 +110,7 @@ def align(topWord, sideWord):
     # Set up the (mostly empty) array
     A = [[0 for x in range(lenSide)] for y in range(lenTop)]
     B = [[0 for x in range(lenSide)] for y in range(lenTop)]
+
     for i in range(1,lenTop):
         A[i][0] = A[i-1][0] + getCost('-', topWord[i])
         B[i][0] = '-'
@@ -114,24 +121,19 @@ def align(topWord, sideWord):
     for x in range(1,lenTop):
         for y in range(1,lenSide):
             t, s = topWord[x], sideWord[y]
-            # if y is 1:
-            #     print t, s,
-            #     print (A[x-1][y], A[x-1][y] + getCost('-', t), '-'),
-            #     print (A[x-1][y-1], A[x-1][y-1] + getCost(t, s), '\\'),
-            #     print (A[x][y-1], A[x][y-1] + getCost(s, '-'), '|')
             A[x][y], B[x][y] = min(
                 (A[x-1][y] + getCost('-', t), '-'),  # insert - into top word
                 (A[x][y-1] + getCost(s, '-'), '|'),  # insert - into side word
-                (A[x-1][y-1] + getCost(t, s), '\\')   # align characters
+                (A[x-1][y-1] + getCost(t, s), '\\')  # align characters
             )
 
     # Walk backwards through the array to find the two strings
     t, s = walkHome(lenTop-1, lenSide-1, '', '')
 
     if DEBUGGING:
-        # print "Calculating the alignment cost between:"
-        # print topWord
-        # print sideWord
+        print "Calculating the alignment cost between:"
+        print topWord
+        print sideWord
         print '=== Cost Array ==='
         printCosts(costs)
         print 'The resulting array:'
@@ -139,10 +141,12 @@ def align(topWord, sideWord):
         print '=== Path Home ==='
         printArr(B)
         print '=== Resulting Strings ==='
-    print '{},{}:{}'.format(t, s, A[lenTop-1][lenSide-1])
-        # print getCost('A', '-')
-        # print getCost('A', 'C')
-        # print getCost('-', 'A')
+    # Append this result to the output file, or print it to screen
+    if outFile:
+        with open(outFile, 'a') as out:
+            out.write('{},{}:{}\n'.format(t, s, A[lenTop-1][lenSide-1]))
+    else:
+        print '{},{}:{}'.format(t, s, A[lenTop-1][lenSide-1])
 
 # Read in the costs from file
 costs, chars = readCostFile(costFile)

@@ -150,8 +150,6 @@ def main(argv):
             print("Failurs (Step %s): %s" % ('2', str(step2_fails)) )
             print("Please find more info at %s"% ('imp2out_fails_2.txt'))
             sys.exit()
-    # """
-
 
 if __name__ == "__main__":
     main(sys.argv[1:])
