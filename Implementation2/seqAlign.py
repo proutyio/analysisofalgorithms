@@ -1,6 +1,6 @@
 import sys, re
 
-DEBUGGING = True
+DEBUGGING = False
 
 costFile = 'imp2cost.txt'
 seqFile = 'imp2input.txt'
@@ -69,10 +69,11 @@ def align(topWord, sideWord):
         ''' Returns cost to convert from one letter to another '''
         return int(costs[a][b])
 
-    def walkHome(x, y):
+    def walkHome():
         ''' Walk back to the beginning, creating the changed strings '''
         tW, sW = '', ''
-        while x > 0 and y > 0:
+        x, y = lenTop-1, lenSide-1
+        while x > 0 or y > 0:
             if DEBUGGING: print x, y, B[x][y]
             if B[x][y] == '-':
                 sW = '-'+sW
@@ -88,25 +89,6 @@ def align(topWord, sideWord):
                 x -= 1
                 y -= 1
         return tW, sW
-
-        # if x is 0 and y is 0:
-        #     return tW, sW
-        # if DEBUGGING: print x, y, B[x][y],
-        # if B[x][y] == '-':
-        #     sW = '-'+sW
-        #     tW = topWord[x]+tW
-        #     x -= 1
-        # elif B[x][y] == '|':
-        #     sW = sideWord[y]+sW
-        #     tW = '-'+tW
-        #     y -= 1
-        # else:
-        #     sW = sideWord[y]+sW
-        #     tW = topWord[x]+tW
-        #     x -= 1
-        #     y -= 1
-        # if DEBUGGING: print tW, sW
-        # return walkHome(x, y, tW, sW)
 
     # Save word sizes for later
     lenTop = len(topWord)
@@ -126,23 +108,29 @@ def align(topWord, sideWord):
     for x in xrange(1,lenTop):
         for y in xrange(1,lenSide):
             t, s = topWord[x], sideWord[y]
-            if x is 1 and y is 3:
-                print "Row 3, col 1:"
-                print "| is {}+{}={},".format(
-                    A[x][y-1],
-                    getCost('-', s),
-                    A[x][y-1] + getCost('-', s)
-                )
-                print "- is {}+{}={},".format(
-                    A[x-1][y],
-                    getCost('-', t),
-                    A[x-1][y] + getCost('-', t)
-                )
-                print "\ is {}+{}={},".format(
-                    A[x-1][y-1],
-                    getCost(t, s),
-                    A[x-1][y-1] + getCost(t, s),
-                )
+            # if DEBUGGING and x is 5 and y is 1:
+            #     print "x={}, y={}".format(x,y)
+            #     print "\t- is {}+{}={},".format(
+            #         A[x-1][y],
+            #         getCost('-', t),
+            #         A[x-1][y] + getCost('-', t)
+            #     )
+            #     print "\t| is {}+{}={},".format(
+            #     A[x][y-1],
+            #     getCost('-', s),
+            #     A[x][y-1] + getCost('-', s)
+            #     )
+            #     print "\t\ is {}+{}={},".format(
+            #         A[x-1][y-1],
+            #         getCost(t, s),
+            #         A[x-1][y-1] + getCost(t, s),
+            #     )
+            #     print '\tChose: ',min(
+            #         A[x-1][y] + getCost('-', t),  # insert - into top word
+            #         A[x][y-1] + getCost(s, '-'),  # insert - into side word
+            #         A[x-1][y-1] + getCost(t, s)  # align characters
+            #     )
+            #     print "\t{} > -:{}, {} > -:{}".format(t, getCost('-', t), s, getCost('-', s))
             A[x][y], B[x][y] = min(
                 (A[x-1][y] + getCost('-', t), '-'),  # insert - into top word
                 (A[x][y-1] + getCost(s, '-'), '|'),  # insert - into side word
@@ -150,7 +138,7 @@ def align(topWord, sideWord):
             )
 
     # Walk backwards through the array to find the two strings
-    t, s = walkHome(lenTop-1, lenSide-1)
+    t, s = walkHome()
 
     if DEBUGGING:
         print "Calculating the alignment cost between:"
