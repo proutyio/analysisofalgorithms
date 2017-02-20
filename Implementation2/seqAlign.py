@@ -11,6 +11,7 @@ def readInputFile(cFile):
     # Overwrite output file, if it exists
     open(outFile, 'w+').close()
     with open(cFile, 'r') as file:
+        # Solve each line in the file.
         for line in file:
             a, b = line.split(',')
             align('-'+a, '-'+b[:-1])
@@ -33,6 +34,7 @@ def readCostFile(cFile):
                     costs[f[0]][chars[i]] = c
     return costs, chars[1:]
 
+@profile
 def align(topWord, sideWord):
     def printArr(arr):
         ''' Display the array as it would appear on paper '''
