@@ -1,32 +1,19 @@
 import sys, re
 
-DEBUGGING = False
+DEBUGGING = True
 
-if(len(sys.argv)>2):
-    costFile = sys.argv[1]
-    seqFile = sys.argv[2]
-    outFile = False
-else:
-    costFile = 'imp2cost.txt'
-    seqFile = 'imp2input.txt'
-    outFile = 'imp2output.txt'
-    # print "Usage: python seqAlign <cost file> <sequence file>"
-    # sys.exit()
+costFile = 'imp2cost.txt'
+seqFile = 'imp2input.txt'
+outFile = 'imp2output.txt'
 
 def readInputFile(cFile):
     ''' Read the input strings in from a file '''
     # Overwrite output file, if it exists
-    if outFile:
-        open(outFile, 'w+').close()
-    i = 0
+    open(outFile, 'w+').close()
     with open(cFile, 'r') as file:
         for line in file:
             a, b = line.split(',')
             align('-'+a, '-'+b[:-1])
-            # Limit number of lines from input file
-            # i += 1
-            # if i is 10:
-                # sys.exit(0)
 
 def readCostFile(cFile):
     ''' Read the cost array into a dictionary of key:value pairs'''
@@ -56,8 +43,8 @@ def align(topWord, sideWord):
             print "{:>2}".format(x),
         print ''
         # Print each line
-        for y in range(lenSide):
-            for x in range(lenTop):
+        for y in xrange(lenSide):
+            for x in xrange(lenTop):
                 if x is 0:
                     print "{:>2}".format(sideWord[y]),
                 print "{:>2}".format(arr[x][y]),
@@ -82,45 +69,80 @@ def align(topWord, sideWord):
         ''' Returns cost to convert from one letter to another '''
         return int(costs[a][b])
 
-    def walkHome(x, y, tW, sW):
+    def walkHome(x, y):
         ''' Walk back to the beginning, creating the changed strings '''
-        if x is 0 and y is 0:
-            return tW, sW
-        if DEBUGGING: print x, y, B[x][y],
-        if B[x][y] == '-':
-            sW = '-'+sW
-            tW = topWord[x]+tW
-            x -= 1
-        elif B[x][y] == '|':
-            sW = sideWord[y]+sW
-            tW = '-'+tW
-            y -= 1
-        else:
-            sW = sideWord[y]+sW
-            tW = topWord[x]+tW
-            x -= 1
-            y -= 1
-        if DEBUGGING: print tW, sW
-        return walkHome(x, y, tW, sW)
+        tW, sW = '', ''
+        while x > 0 and y > 0:
+            if DEBUGGING: print x, y, B[x][y]
+            if B[x][y] == '-':
+                sW = '-'+sW
+                tW = topWord[x]+tW
+                x -= 1
+            elif B[x][y] == '|':
+                sW = sideWord[y]+sW
+                tW = '-'+tW
+                y -= 1
+            else:
+                sW = sideWord[y]+sW
+                tW = topWord[x]+tW
+                x -= 1
+                y -= 1
+        return tW, sW
+
+        # if x is 0 and y is 0:
+        #     return tW, sW
+        # if DEBUGGING: print x, y, B[x][y],
+        # if B[x][y] == '-':
+        #     sW = '-'+sW
+        #     tW = topWord[x]+tW
+        #     x -= 1
+        # elif B[x][y] == '|':
+        #     sW = sideWord[y]+sW
+        #     tW = '-'+tW
+        #     y -= 1
+        # else:
+        #     sW = sideWord[y]+sW
+        #     tW = topWord[x]+tW
+        #     x -= 1
+        #     y -= 1
+        # if DEBUGGING: print tW, sW
+        # return walkHome(x, y, tW, sW)
 
     # Save word sizes for later
     lenTop = len(topWord)
     lenSide = len(sideWord)
 
     # Set up the (mostly empty) array
-    A = [[0 for x in range(lenSide)] for y in range(lenTop)]
-    B = [[0 for x in range(lenSide)] for y in range(lenTop)]
+    A = [[0 for x in xrange(lenSide)] for y in xrange(lenTop)]
+    B = [[0 for x in xrange(lenSide)] for y in xrange(lenTop)]
 
-    for i in range(1,lenTop):
+    for i in xrange(1,lenTop):
         A[i][0] = A[i-1][0] + getCost('-', topWord[i])
         B[i][0] = '-'
-    for i in range(1, lenSide):
+    for i in xrange(1, lenSide):
         A[0][i] = A[0][i-1] + getCost('-', sideWord[i])
         B[0][i] = '|'
 
-    for x in range(1,lenTop):
-        for y in range(1,lenSide):
+    for x in xrange(1,lenTop):
+        for y in xrange(1,lenSide):
             t, s = topWord[x], sideWord[y]
+            if x is 1 and y is 3:
+                print "Row 3, col 1:"
+                print "| is {}+{}={},".format(
+                    A[x][y-1],
+                    getCost('-', s),
+                    A[x][y-1] + getCost('-', s)
+                )
+                print "- is {}+{}={},".format(
+                    A[x-1][y],
+                    getCost('-', t),
+                    A[x-1][y] + getCost('-', t)
+                )
+                print "\ is {}+{}={},".format(
+                    A[x-1][y-1],
+                    getCost(t, s),
+                    A[x-1][y-1] + getCost(t, s),
+                )
             A[x][y], B[x][y] = min(
                 (A[x-1][y] + getCost('-', t), '-'),  # insert - into top word
                 (A[x][y-1] + getCost(s, '-'), '|'),  # insert - into side word
@@ -128,7 +150,7 @@ def align(topWord, sideWord):
             )
 
     # Walk backwards through the array to find the two strings
-    t, s = walkHome(lenTop-1, lenSide-1, '', '')
+    t, s = walkHome(lenTop-1, lenSide-1)
 
     if DEBUGGING:
         print "Calculating the alignment cost between:"
@@ -142,11 +164,8 @@ def align(topWord, sideWord):
         printArr(B)
         print '=== Resulting Strings ==='
     # Append this result to the output file, or print it to screen
-    if outFile:
-        with open(outFile, 'a') as out:
-            out.write('{},{}:{}\n'.format(t, s, A[lenTop-1][lenSide-1]))
-    else:
-        print '{},{}:{}'.format(t, s, A[lenTop-1][lenSide-1])
+    with open(outFile, 'a') as out:
+        out.write('{},{}:{}\n'.format(t, s, A[lenTop-1][lenSide-1]))
 
 # Read in the costs from file
 costs, chars = readCostFile(costFile)
