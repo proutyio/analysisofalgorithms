@@ -97,8 +97,10 @@ def align(topWord, sideWord):
     lenSide = len(sideWord)
 
     # Set up the (mostly empty) array
-    A = [[0 for x in xrange(lenSide)] for y in xrange(lenTop)]
-    B = [[0 for x in xrange(lenSide)] for y in xrange(lenTop)]
+    A = [[0]*lenSide for y in xrange(lenTop)]
+    B = [[0]*lenSide for y in xrange(lenTop)]
+    # C = [[0 for x in xrange(lenSide)] for y in xrange(lenTop)]
+    # D = [[0 for x in xrange(lenSide)] for y in xrange(lenTop)]
 
     for i in xrange(1,lenTop):
         A[i][0] = A[i-1][0] + getCost('-', topWord[i])
@@ -110,29 +112,6 @@ def align(topWord, sideWord):
     for x in xrange(1,lenTop):
         for y in xrange(1,lenSide):
             t, s = topWord[x], sideWord[y]
-            # if DEBUGGING and x is 5 and y is 1:
-            #     print "x={}, y={}".format(x,y)
-            #     print "\t- is {}+{}={},".format(
-            #         A[x-1][y],
-            #         getCost('-', t),
-            #         A[x-1][y] + getCost('-', t)
-            #     )
-            #     print "\t| is {}+{}={},".format(
-            #     A[x][y-1],
-            #     getCost('-', s),
-            #     A[x][y-1] + getCost('-', s)
-            #     )
-            #     print "\t\ is {}+{}={},".format(
-            #         A[x-1][y-1],
-            #         getCost(t, s),
-            #         A[x-1][y-1] + getCost(t, s),
-            #     )
-            #     print '\tChose: ',min(
-            #         A[x-1][y] + getCost('-', t),  # insert - into top word
-            #         A[x][y-1] + getCost(s, '-'),  # insert - into side word
-            #         A[x-1][y-1] + getCost(t, s)  # align characters
-            #     )
-            #     print "\t{} > -:{}, {} > -:{}".format(t, getCost('-', t), s, getCost('-', s))
             A[x][y], B[x][y] = min(
                 (A[x-1][y] + getCost('-', t), '-'),  # insert - into top word
                 (A[x][y-1] + getCost(s, '-'), '|'),  # insert - into side word
