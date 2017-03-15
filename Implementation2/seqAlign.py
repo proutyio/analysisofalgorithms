@@ -1,4 +1,17 @@
+<<<<<<< HEAD
 import sys, re, time
+=======
+#!/usr/bin/python
+'''
+	CS 325 - Implementation 2
+		Sequence alignment via dynamic programming
+
+	Kyle Prouty, Levi Willmeth, Andrew Morrill
+	Winter 2017
+'''
+
+import sys, re
+>>>>>>> 0404bc8bdd747e9a9d205a4781cff61271b9bce3
 
 DEBUGGING = False
 
@@ -34,7 +47,11 @@ def readCostFile(cFile):
                     costs[f[0]][chars[i]] = c
     return costs, chars[1:]
 
+<<<<<<< HEAD
 #@profile
+=======
+# @profile
+>>>>>>> 0404bc8bdd747e9a9d205a4781cff61271b9bce3
 def align(topWord, sideWord):
     def printArr(arr):
         ''' Display the array as it would appear on paper '''
