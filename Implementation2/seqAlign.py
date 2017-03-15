@@ -1,4 +1,4 @@
-import sys, re
+import sys, re, time
 
 DEBUGGING = False
 
@@ -34,7 +34,7 @@ def readCostFile(cFile):
                     costs[f[0]][chars[i]] = c
     return costs, chars[1:]
 
-@profile
+#@profile
 def align(topWord, sideWord):
     def printArr(arr):
         ''' Display the array as it would appear on paper '''
@@ -117,7 +117,8 @@ def align(topWord, sideWord):
                 (A[x][y-1] + getCost(s, '-'), '|'),  # insert - into side word
                 (A[x-1][y-1] + getCost(t, s), '\\')  # align characters
             )
-
+    
+    
     # Walk backwards through the array to find the two strings
     t, s = walkHome()
 
@@ -136,6 +137,10 @@ def align(topWord, sideWord):
     with open(outFile, 'a') as out:
         out.write('{},{}:{}\n'.format(t, s, A[lenTop-1][lenSide-1]))
 
+start = time.time()
 # Read in the costs from file
 costs, chars = readCostFile(costFile)
 readInputFile(seqFile)
+
+end = time.time()
+print(end-start)
