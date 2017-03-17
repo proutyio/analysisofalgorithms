@@ -32,6 +32,8 @@ print prob
 status = prob.solve()
 print value(prob.objective)
 print value(a)
+print value(b)
+
 
 
 
