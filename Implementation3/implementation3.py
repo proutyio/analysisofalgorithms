@@ -42,6 +42,8 @@ x5 = LpVariable("x5")
 Td = LpVariable("Tdvar")
 prob += Td
 
+print prob
+
 #the different parts of the equation
 lin=0
 seas=0
@@ -51,6 +53,7 @@ for i in range(0,n):
 	lin = (x0 + x1 * x_vals[i])
 	seas = (x2 * math.cos(2*math.pi * x_vals[i]/364.25) + x3 * math.sin(2*math.pi * x_vals[i]/364.25))
 	sol = (x4 * math.cos(2*math.pi * x_vals[i]/(364.25*10.7)) + x5 * math.sin(2*math.pi*x_vals[i]/(364.25 * 10.7)))
+	
 	prob += Td >= (lin + seas + sol - y_vals[i])
 	prob += Td >= -(lin + seas + sol - y_vals[i])
 
